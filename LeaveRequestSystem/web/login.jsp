@@ -1,89 +1,63 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<!DOCTYPE html>
 <html>
 <head>
-    <title>Đăng nhập - Leave Request System</title>
+    <title>Đăng nhập hệ thống</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #74ebd5, #ACB6E5);
+            background: #f0f2f5;
             display: flex;
-            justify-content: center;
-            align-items: center;
             height: 100vh;
-            margin: 0;
+            align-items: center;
+            justify-content: center;
         }
-
         .login-container {
-            background-color: white;
-            padding: 30px 40px;
+            background: #fff;
+            padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.15);
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
             width: 350px;
         }
-
         h2 {
             text-align: center;
             color: #333;
-            margin-bottom: 20px;
         }
-
-        label {
-            font-weight: bold;
-            display: block;
-            margin-top: 15px;
-        }
-
-        input[type="text"],
-        input[type="password"] {
+        input[type="text"], input[type="password"] {
             width: 100%;
+            margin-top: 10px;
             padding: 10px;
-            margin-top: 5px;
             border: 1px solid #ccc;
             border-radius: 6px;
         }
-
         input[type="submit"] {
             width: 100%;
-            margin-top: 25px;
-            padding: 12px;
-            background-color: #4CAF50;
-            border: none;
+            background: #007bff;
             color: white;
-            font-weight: bold;
+            border: none;
+            padding: 10px;
             border-radius: 6px;
+            margin-top: 20px;
             cursor: pointer;
-            transition: 0.3s;
         }
-
         input[type="submit"]:hover {
-            background-color: #45a049;
+            background: #0056b3;
         }
-
         .error {
             color: red;
-            margin-top: 15px;
             text-align: center;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <h2>Đăng nhập</h2>
-
-        <form action="login" method="post">
-            <label for="username">Tên đăng nhập:</label>
-            <input type="text" id="username" name="username" required>
-
-            <label for="password">Mật khẩu:</label>
-            <input type="password" id="password" name="password" required>
-
-            <input type="submit" value="Đăng nhập">
-        </form>
-
-        <div class="error">
-            ${errorMessage != null ? errorMessage : ""}
-        </div>
-    </div>
+<div class="login-container">
+    <h2>Đăng nhập</h2>
+    <form action="login" method="post">
+        <input type="text" name="username" placeholder="Tên đăng nhập" required>
+        <input type="password" name="password" placeholder="Mật khẩu" required>
+        <input type="submit" value="Đăng nhập">
+    </form>
+    <div class="error">${error}</div>
+</div>
 </body>
 </html>
