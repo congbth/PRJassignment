@@ -3,40 +3,87 @@ package model;
 import java.sql.Date;
 
 public class Request {
+    private int id;
     private String title;
     private Date fromDate;
     private Date toDate;
     private String reason;
     private String status;
-    private int createdBy;
+    private int createdById;
+    private int processedById;
 
-    public Request() {}
+    // ✅ Thêm các trường dùng để hiển thị
+    private String createdByName;
+    private String processedByName;
 
-    public Request(String title, Date fromDate, Date toDate, String reason, String status, int createdBy) {
-        this.title = title;
-        this.fromDate = fromDate;
-        this.toDate = toDate;
-        this.reason = reason;
-        this.status = status;
-        this.createdBy = createdBy;
+    // --- GET & SET ---
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
     }
 
-    // Getter & Setter
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-    public Date getFromDate() { return fromDate; }
-    public void setFromDate(Date fromDate) { this.fromDate = fromDate; }
+    public Date getFromDate() {
+        return fromDate;
+    }
+    public void setFromDate(Date fromDate) {
+        this.fromDate = fromDate;
+    }
 
-    public Date getToDate() { return toDate; }
-    public void setToDate(Date toDate) { this.toDate = toDate; }
+    public Date getToDate() {
+        return toDate;
+    }
+    public void setToDate(Date toDate) {
+        this.toDate = toDate;
+    }
 
-    public String getReason() { return reason; }
-    public void setReason(String reason) { this.reason = reason; }
+    public String getReason() {
+        return reason;
+    }
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-    public int getCreatedBy() { return createdBy; }
-    public void setCreatedBy(int createdBy) { this.createdBy = createdBy; }
+    public int getCreatedById() {
+        return createdById;
+    }
+    public void setCreatedById(int createdById) {
+        this.createdById = createdById;
+    }
+
+    public int getProcessedById() {
+        return processedById;
+    }
+    public void setProcessedById(int processedById) {
+        this.processedById = processedById;
+    }
+
+    public String getCreatedByName() {
+        return createdByName;
+    }
+    public void setCreatedByName(String createdByName) {
+        this.createdByName = createdByName;
+    }
+
+    public String getProcessedByName() {
+        return processedByName;
+    }
+    public void setProcessedByName(String processedByName) {
+        this.processedByName = processedByName;
+    }
 }

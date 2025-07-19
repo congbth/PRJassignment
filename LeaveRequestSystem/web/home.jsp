@@ -14,55 +14,66 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            padding: 40px;
-            background-color: #f0f2f5;
+            background: #f4f4f4;
+            text-align: center;
+            padding: 50px;
         }
 
-        .card {
+        .container {
             background: white;
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            max-width: 500px;
+            max-width: 600px;
             margin: auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
 
         h2 {
-            color: #2c3e50;
+            margin-bottom: 20px;
         }
 
-        .info {
-            margin-top: 20px;
-            line-height: 1.6;
+        .actions {
+            margin-top: 30px;
         }
 
         .btn {
             display: inline-block;
-            margin-top: 25px;
             padding: 10px 20px;
+            margin: 10px;
             background: #3498db;
             color: white;
             text-decoration: none;
-            border-radius: 6px;
+            border-radius: 5px;
             font-weight: bold;
         }
 
         .btn:hover {
             background: #2980b9;
         }
+
+        .logout {
+            background: #e74c3c;
+        }
+
+        .logout:hover {
+            background: #c0392b;
+        }
     </style>
 </head>
 <body>
-    <div class="card">
+    <div class="container">
         <h2>Chào mừng, <%= user.getFullname() %>!</h2>
+        <p>Vai trò: <strong><%= user.getRoleName() %></strong></p>
+        <p>Phòng ban: <strong><%= user.getDepartmentId() %></strong></p>
 
-        <div class="info">
-            <p><strong>Tên đăng nhập:</strong> <%= user.getUsername() %></p>
-            <p><strong>Vai trò:</strong> <%= user.getRoleName() %></p>
-            <p><strong>Phòng ban:</strong> <%= user.getDepartmentId() %></p>
+        <div class="actions">
+            <%-- Chỉ hiện nút này nếu là nhân viên --%>
+            <% if (user.getRoleName().equalsIgnoreCase("Nhân viên")) { %>
+                <a href="requestForm.jsp" class="btn">✍️ Viết đơn nghỉ phép</a>
+            <% } %>
+
+            <a href="logout" class="btn logout">Đăng xuất</a>
         </div>
-
-        <a href="logout" class="btn">Đăng xuất</a>
     </div>
 </body>
 </html>
