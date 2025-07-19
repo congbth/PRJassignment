@@ -2,8 +2,48 @@
 <%@ page import="model.User" %>
 <%
     User user = (User) session.getAttribute("user");
+
     if (user == null) {
         response.sendRedirect("login.jsp");
+        return;
+    }
+
+    if (!user.getRoleName().equalsIgnoreCase("Nhân viên")) {
+%>
+    <html>
+    <head>
+        <title>Truy cập bị từ chối</title>
+        <style>
+            body {
+                font-family: Arial;
+                background: #fce4e4;
+                padding: 50px;
+                text-align: center;
+            }
+            .warning {
+                color: red;
+                font-size: 20px;
+                font-weight: bold;
+                background: #fff0f0;
+                display: inline-block;
+                padding: 20px;
+                border: 2px solid red;
+                border-radius: 10px;
+            }
+            a {
+                display: block;
+                margin-top: 20px;
+                text-decoration: none;
+                color: #2980b9;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="warning">🚫 Bạn không có quyền truy cập chức năng này.</div>
+        <a href="home.jsp">Quay lại trang chủ</a>
+    </body>
+    </html>
+<%
         return;
     }
 %>
@@ -66,11 +106,22 @@
         input[type="submit"]:hover {
             background: #1e8449;
         }
+
+        .error {
+            color: red;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <div class="form-container">
         <h2>Tạo đơn nghỉ phép</h2>
+
+        <% String error = (String) request.getAttribute("errorMessage"); %>
+        <% if (error != null) { %>
+            <div class="error"><%= error %></div>
+        <% } %>
+
         <form action="createRequest" method="post">
             <label>Tiêu đề:</label>
             <input type="text" name="title" required>
