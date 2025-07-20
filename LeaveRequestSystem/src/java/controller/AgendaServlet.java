@@ -21,7 +21,12 @@ public class AgendaServlet extends HttpServlet {
             return;
         }
 
-        // Giao diện chọn ngày
+        String role = (String) session.getAttribute("role");
+        if (!"Trưởng phòng".equals(role)) {
+            response.sendRedirect("dashboard.jsp");
+            return;
+        }
+
         request.getRequestDispatcher("agenda.jsp").forward(request, response);
     }
 
@@ -31,8 +36,19 @@ public class AgendaServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
 
-        int leaderId = (int) request.getSession().getAttribute("user_id");
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user_id") == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
 
+        String role = (String) session.getAttribute("role");
+        if (!"Trưởng phòng".equals(role)) {
+            response.sendRedirect("dashboard.jsp");
+            return;
+        }
+
+        int leaderId = (int) session.getAttribute("user_id");
         LocalDate from = LocalDate.parse(request.getParameter("from_date"));
         LocalDate to = LocalDate.parse(request.getParameter("to_date"));
 
@@ -60,9 +76,9 @@ public class AgendaServlet extends HttpServlet {
                 String name = userRs.getString("full_name");
 
                 Map<LocalDate, Boolean> map = new LinkedHashMap<>();
-                for (LocalDate d : days) map.put(d, true); // true = đi làm
+                for (LocalDate d : days) map.put(d, true); // mặc định là đi làm
 
-                // Kiểm tra đơn nghỉ được duyệt của user này
+                // Kiểm tra đơn nghỉ đã duyệt
                 String reqSql = "SELECT from_date, to_date FROM LeaveRequests WHERE created_by = ? AND status = 'Approved'";
                 PreparedStatement reqStmt = conn.prepareStatement(reqSql);
                 reqStmt.setInt(1, uid);
@@ -73,7 +89,7 @@ public class AgendaServlet extends HttpServlet {
                     LocalDate t = reqRs.getDate(2).toLocalDate();
                     for (LocalDate d : days) {
                         if (!d.isBefore(f) && !d.isAfter(t)) {
-                            map.put(d, false); // nghỉ
+                            map.put(d, false); // đang nghỉ
                         }
                     }
                 }

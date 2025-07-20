@@ -7,7 +7,7 @@
     }
 
     String role = (String) session.getAttribute("role");
-    if (!"Trưởng phòng".equals(role)) {
+    if (!"Trưởng nhóm".equals(role) && !"Trưởng phòng".equals(role)) {
         response.sendRedirect("dashboard.jsp");
         return;
     }
@@ -18,7 +18,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Xét duyệt đơn nghỉ</title>
+    <title>Xét duyệt đơn nghỉ phép</title>
     <style>
         body { font-family: Arial; padding: 40px; background: #f0f4f8; }
         table {
@@ -48,7 +48,7 @@
     </style>
 </head>
 <body>
-<h2 style="text-align:center;">Xét duyệt đơn nghỉ phép của phòng</h2>
+<h2 style="text-align:center;">Xét duyệt đơn nghỉ phép</h2>
 <table>
     <tr>
         <th>Nhân viên</th>

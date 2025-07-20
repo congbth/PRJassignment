@@ -19,31 +19,29 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Agenda phòng ban</title>
+    <title>Lịch nghỉ của phòng</title>
     <style>
-        body { font-family: Arial; background: #f0f4f8; padding: 40px; }
-        .box { background: white; padding: 20px; border-radius: 10px; max-width: 90%; margin: auto; }
-        table {
-            width: 100%; border-collapse: collapse;
-        }
-        th, td {
-            padding: 10px; border: 1px solid #ddd;
-            text-align: center;
-        }
-        th { background: #007bff; color: white; }
-        .work { background-color: #c8e6c9; }   /* xanh lá: đi làm */
-        .off { background-color: #ffcdd2; }    /* đỏ nhạt: nghỉ */
+        body { font-family: Arial; background: #eef3f7; padding: 40px; }
+        .container { background: white; padding: 30px; max-width: 95%; margin: auto;
+            border-radius: 12px; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; border: 1px solid #ccc; text-align: center; }
+        th { background-color: #007bff; color: white; }
+        .work { background-color: #c8e6c9; }
+        .off { background-color: #ffcdd2; }
         form { text-align: center; margin-bottom: 20px; }
     </style>
 </head>
 <body>
-<div class="box">
-    <h2 style="text-align:center;">Tình hình nhân sự phòng ban</h2>
+<div class="container">
+    <h2 style="text-align:center;">Tình hình nghỉ phòng ban</h2>
 
     <form method="post" action="agenda">
-        Từ ngày: <input type="date" name="from_date" required>
-        Đến ngày: <input type="date" name="to_date" required>
-        <input type="submit" value="Xem">
+        Từ ngày:
+        <input type="date" name="from_date" required>
+        Đến ngày:
+        <input type="date" name="to_date" required>
+        <input type="submit" value="Xem lịch">
     </form>
 
     <% if (agenda != null && days != null) { %>
@@ -57,7 +55,7 @@
         <% for (Map.Entry<String, Map<LocalDate, Boolean>> entry : agenda.entrySet()) { %>
         <tr>
             <td><%= entry.getKey() %></td>
-            <% for (LocalDate d : days) { 
+            <% for (LocalDate d : days) {
                 boolean isWorking = entry.getValue().get(d);
             %>
             <td class="<%= isWorking ? "work" : "off" %>">

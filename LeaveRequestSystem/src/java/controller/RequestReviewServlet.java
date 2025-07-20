@@ -24,7 +24,7 @@ public class RequestReviewServlet extends HttpServlet {
         }
 
         String role = (String) session.getAttribute("role");
-        if (!"Trưởng phòng".equals(role)) {
+        if (!"Trưởng nhóm".equals(role) && !"Trưởng phòng".equals(role)) {
             response.sendRedirect("dashboard.jsp");
             return;
         }
@@ -33,21 +33,16 @@ public class RequestReviewServlet extends HttpServlet {
         List<Map<String, String>> requests = new ArrayList<>();
 
         try (Connection conn = DBConnection.getConnection()) {
-            String sql = """
-                SELECT r.request_id, r.from_date, r.to_date, r.reason, r.status,
-                       u.full_name AS employee_name
-                FROM LeaveRequests r
-                JOIN Users u ON r.created_by = u.user_id
-                WHERE r.created_by IN (
-                    SELECT user_id FROM Users WHERE department_id = (
-                        SELECT department_id FROM Users WHERE user_id = ?
-                    ) AND user_id != ?
-                ) AND r.status = 'Inprogress'
-            """;
+            String sql = "SELECT r.request_id, r.from_date, r.to_date, r.reason, r.status, " +
+                         "u.full_name AS employee_name " +
+                         "FROM LeaveRequests r " +
+                         "JOIN Users u ON r.created_by = u.user_id " +
+                         "WHERE r.created_by IN ( " +
+                         "SELECT employee_id FROM Reporting WHERE manager_id = ? ) " +
+                         "AND r.status = 'Inprogress'";
 
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, managerId);
-            ps.setInt(2, managerId);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -79,7 +74,7 @@ public class RequestReviewServlet extends HttpServlet {
         }
 
         String role = (String) session.getAttribute("role");
-        if (!"Trưởng phòng".equals(role)) {
+        if (!"Trưởng nhóm".equals(role) && !"Trưởng phòng".equals(role)) {
             response.sendRedirect("dashboard.jsp");
             return;
         }
