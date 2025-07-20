@@ -5,6 +5,13 @@
         response.sendRedirect("login.jsp");
         return;
     }
+
+    String role = (String) session.getAttribute("role");
+    if (!"Trưởng phòng".equals(role)) {
+        response.sendRedirect("dashboard.jsp");
+        return;
+    }
+
     List<Map<String, String>> requests = (List<Map<String, String>>) request.getAttribute("requests");
 %>
 <!DOCTYPE html>
@@ -41,7 +48,7 @@
     </style>
 </head>
 <body>
-<h2 style="text-align:center;">Đơn của cấp dưới</h2>
+<h2 style="text-align:center;">Xét duyệt đơn nghỉ phép của phòng</h2>
 <table>
     <tr>
         <th>Nhân viên</th>

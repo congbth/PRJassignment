@@ -6,6 +6,12 @@
         return;
     }
 
+    String role = (String) session.getAttribute("role");
+    if (!"Trưởng phòng".equals(role)) {
+        response.sendRedirect("dashboard.jsp");
+        return;
+    }
+
     List<LocalDate> days = (List<LocalDate>) request.getAttribute("days");
     Map<String, Map<LocalDate, Boolean>> agenda = (Map<String, Map<LocalDate, Boolean>>) request.getAttribute("agenda");
 %>

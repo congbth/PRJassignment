@@ -12,7 +12,7 @@ import model.DBConnection;
 @WebServlet("/review-requests")
 public class RequestReviewServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
@@ -20,6 +20,12 @@ public class RequestReviewServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("user_id") == null) {
             response.sendRedirect("login.jsp");
+            return;
+        }
+
+        String role = (String) session.getAttribute("role");
+        if (!"Trưởng phòng".equals(role)) {
+            response.sendRedirect("dashboard.jsp");
             return;
         }
 
@@ -33,12 +39,15 @@ public class RequestReviewServlet extends HttpServlet {
                 FROM LeaveRequests r
                 JOIN Users u ON r.created_by = u.user_id
                 WHERE r.created_by IN (
-                    SELECT employee_id FROM Reporting WHERE manager_id = ?
-                )
+                    SELECT user_id FROM Users WHERE department_id = (
+                        SELECT department_id FROM Users WHERE user_id = ?
+                    ) AND user_id != ?
+                ) AND r.status = 'Inprogress'
             """;
 
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, managerId);
+            ps.setInt(2, managerId);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -61,11 +70,23 @@ public class RequestReviewServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
+
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user_id") == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
+        String role = (String) session.getAttribute("role");
+        if (!"Trưởng phòng".equals(role)) {
+            response.sendRedirect("dashboard.jsp");
+            return;
+        }
 
         int requestId = Integer.parseInt(request.getParameter("request_id"));
         String action = request.getParameter("action");
-        int managerId = (int) request.getSession().getAttribute("user_id");
+        int managerId = (int) session.getAttribute("user_id");
 
         try (Connection conn = DBConnection.getConnection()) {
             String sql = "UPDATE LeaveRequests SET status = ?, processed_by = ? WHERE request_id = ?";

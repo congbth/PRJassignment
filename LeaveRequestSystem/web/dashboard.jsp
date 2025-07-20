@@ -14,11 +14,7 @@
     <meta charset="UTF-8">
     <title>Dashboard</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f7fa;
-            padding: 40px;
-        }
+        body { font-family: Arial; background: #f5f7fa; padding: 40px; }
         .container {
             background: white;
             padding: 30px;
@@ -28,15 +24,8 @@
             box-shadow: 0 0 15px rgba(0,0,0,0.1);
         }
         h2 { color: #333; text-align: center; }
-        ul {
-            list-style: none;
-            padding: 0;
-            margin-top: 20px;
-        }
-        li {
-            margin: 12px 0;
-            text-align: center;
-        }
+        ul { list-style: none; padding: 0; margin-top: 20px; }
+        li { margin: 12px 0; text-align: center; }
         a {
             display: inline-block;
             padding: 10px 20px;
@@ -45,13 +34,8 @@
             text-decoration: none;
             border-radius: 6px;
         }
-        a:hover {
-            background: #0056b3;
-        }
-        .logout {
-            text-align: center;
-            margin-top: 30px;
-        }
+        a:hover { background: #0056b3; }
+        .logout { text-align: center; margin-top: 30px; }
     </style>
 </head>
 <body>
@@ -60,15 +44,16 @@
     <p style="text-align:center;">Vai trò: <strong><%= role %></strong></p>
 
     <ul>
-        <% if ("Nhân viên".equals(role)) { %>
+        <%-- Cả nhân viên và trưởng nhóm đều có quyền tạo + xem đơn của mình --%>
+        <% if ("Nhân viên".equals(role) || "Trưởng nhóm".equals(role)) { %>
             <li><a href="request_form.jsp">Tạo đơn nghỉ phép</a></li>
             <li><a href="my-requests">Xem đơn của tôi</a></li>
-        <% } else if ("Trưởng nhóm".equals(role)) { %>
-            <li><a href="review-requests">Xét duyệt đơn của cấp dưới</a></li>
-        <% } else if ("Trưởng phòng".equals(role)) { %>
+        <% } %>
+
+        <%-- Trưởng phòng được quyền duyệt và xem lịch phòng ban --%>
+        <% if ("Trưởng phòng".equals(role)) { %>
+            <li><a href="review-requests">Xét duyệt đơn của phòng</a></li>
             <li><a href="agenda">Xem tình hình nghỉ toàn phòng</a></li>
-        <% } else { %>
-            <li>Không xác định được vai trò. Hãy kiểm tra dữ liệu!</li>
         <% } %>
     </ul>
 

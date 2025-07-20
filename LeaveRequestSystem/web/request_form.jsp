@@ -4,6 +4,11 @@
         response.sendRedirect("login.jsp");
         return;
     }
+    String role = (String) session.getAttribute("role");
+    if (!"Nhân viên".equals(role) && !"Trưởng nhóm".equals(role)) {
+        response.sendRedirect("dashboard.jsp");
+        return;
+    }
 %>
 <!DOCTYPE html>
 <html>
