@@ -1,10 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page language="java" %>
 <%
     if (session == null || session.getAttribute("user_id") == null) {
         response.sendRedirect("login.jsp");
         return;
     }
+
     String fullName = (String) session.getAttribute("full_name");
     String role = (String) session.getAttribute("role");
 %>
@@ -14,22 +14,67 @@
     <meta charset="UTF-8">
     <title>Dashboard</title>
     <style>
-        body { font-family: Arial; padding: 50px; background: #f8f9fa; }
-        .box {
-            background: white; padding: 30px;
-            max-width: 500px; margin: auto;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            padding: 40px;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            max-width: 600px;
+            margin: auto;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        h2 { color: #333; text-align: center; }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        li {
+            margin: 12px 0;
             text-align: center;
         }
-        h2 { color: #333; }
+        a {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+        a:hover {
+            background: #0056b3;
+        }
+        .logout {
+            text-align: center;
+            margin-top: 30px;
+        }
     </style>
 </head>
 <body>
-<div class="box">
-    <h2>Chào, <%= fullName %></h2>
-    <p>Vai trò của bạn: <strong><%= role %></strong></p>
-    <a href="logout.jsp">Đăng xuất</a>
+<div class="container">
+    <h2>Xin chào, <%= fullName %></h2>
+    <p style="text-align:center;">Vai trò: <strong><%= role %></strong></p>
+
+    <ul>
+        <% if ("Nhân viên".equals(role)) { %>
+            <li><a href="request_form.jsp">Tạo đơn nghỉ phép</a></li>
+            <li><a href="my-requests">Xem đơn của tôi</a></li>
+        <% } else if ("Trưởng nhóm".equals(role)) { %>
+            <li><a href="review-requests">Xét duyệt đơn của cấp dưới</a></li>
+        <% } else if ("Trưởng phòng".equals(role)) { %>
+            <li><a href="agenda">Xem tình hình nghỉ toàn phòng</a></li>
+        <% } else { %>
+            <li>Không xác định được vai trò. Hãy kiểm tra dữ liệu!</li>
+        <% } %>
+    </ul>
+
+    <div class="logout">
+        <a href="logout.jsp" style="background:#dc3545;">Đăng xuất</a>
+    </div>
 </div>
 </body>
 </html>
